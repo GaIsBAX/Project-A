@@ -1,6 +1,7 @@
 package main
 
 import (
+	"A/internal/app"
 	"A/internal/config"
 	"fmt"
 	"log/slog"
@@ -19,6 +20,10 @@ func main() {
 
 	log := setupLogger(cfg.Env)
 	fmt.Println(log)
+
+	app := app.New(log, cfg.GRPC.Port, cfg.StoragePath, cfg.TokenTTL)
+
+	app.GRPCSrv.MustRun()
 }
 
 func setupLogger(env string) *slog.Logger {
