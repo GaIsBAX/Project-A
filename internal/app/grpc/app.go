@@ -15,10 +15,10 @@ type App struct {
 	port int
 }
 
-func New(log *slog.Logger, port int) *App {
+func New(log *slog.Logger, authService authgrpc.Auth, port int) *App {
 	gRPCServer := grpc.NewServer()
 
-	authgrpc.Register(gRPCServer)
+	authgrpc.Register(gRPCServer, authService)
 
 	return &App{
 		log:  log,
@@ -55,7 +55,7 @@ func (a *App) Run() error {
 func (a *App) Stop() {
 	const op = "app/grpc/app.go/stop"
 
-	a.log.With(slog.String("op", op)).Info("stopping gRPC server", slog.Int("port", a.port))
+	a.log.With(slog.String("op", op)).Info("stopping gRPC server")
 
 	a.gRPC.GracefulStop()
 
