@@ -15,6 +15,7 @@ type App struct {
 	port int
 }
 
+// New создает и возвращает новый экземпляр gRPC приложения.
 func New(log *slog.Logger, authService authgrpc.Auth, port int) *App {
 	gRPCServer := grpc.NewServer()
 
@@ -27,12 +28,15 @@ func New(log *slog.Logger, authService authgrpc.Auth, port int) *App {
 	}
 }
 
+// MustRun запускает gRPC сервер, но если возникнет ошибка, то
+// вызывает panic.
 func (a *App) MustRun() {
 	if err := a.Run(); err != nil {
 		panic(err)
 	}
 }
 
+// Run запускает gRPC сервер.
 func (a *App) Run() error {
 	const op = "app/grpc/app.go/run"
 
@@ -52,6 +56,7 @@ func (a *App) Run() error {
 	return nil
 }
 
+// Stop останавливает gRPC сервер.
 func (a *App) Stop() {
 	const op = "app/grpc/app.go/stop"
 

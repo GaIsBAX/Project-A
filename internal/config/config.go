@@ -20,6 +20,9 @@ type GRPCConfig struct {
 	Timeout time.Duration `yaml:"timeout"`
 }
 
+// MustLoad загружает конфигурацию из файла, пути к которому может быть
+// указан через флаг -config или переменную окружения CONFIG_PATH.
+// Если путь не указан, то функция возвращает panic.
 func MustLoad() *Config {
 	configPath := fetchConfigPath()
 	if configPath == "" {
@@ -29,8 +32,9 @@ func MustLoad() *Config {
 	return MustLoadPath(configPath)
 }
 
+// MustLoadPath загружает конфигурацию из указанного файла. Если файл не существует,
+// то функция возвращает panic.
 func MustLoadPath(configPath string) *Config {
-	// check if file exists
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		panic("config file does not exist: " + configPath)
 	}
@@ -44,9 +48,10 @@ func MustLoadPath(configPath string) *Config {
 	return &cfg
 }
 
-// fetchConfigPath fetches config path from command line flag or environment variable.
-// Priority: flag > env > default.
-// Default value is empty string.
+// fetchConfigPath возвращает путь до конфигурационного файла, который может быть
+// указан флагом -config или переменной окружения CONFIG_PATH.
+// Приоритет: flag > env > default.
+// Деволтное значение - пустая строка.
 func fetchConfigPath() string {
 	var res string
 

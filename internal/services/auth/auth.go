@@ -31,7 +31,7 @@ type AppProvider interface {
 	App(ctx context.Context, appID int) (models.App, error)
 }
 
-// New return a new instance of the Auth service.
+// New создает и возвращает новый экземпляр сервиса аутентификации.
 func New(
 	log *slog.Logger,
 	userSaver UserSaver,
